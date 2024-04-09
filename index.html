@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    
+    <h1>Let's play Tic Tac Toe!</h1>
+    <form id="gameInfo">
+        <label for="playerOne">Player One (X):</label>
+        <input id ="playerOne" type="text" name="playerOne">
+        <label for="playerTwo">Player Two (O):</label>
+        <input id="playerTwo" type="text" name="playerTwo">
+    </form>
+    <button type="submit" form="gameInfo">Start Game</button>
 </body>
 </html>
