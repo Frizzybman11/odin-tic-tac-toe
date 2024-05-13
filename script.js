@@ -18,7 +18,7 @@ function game(playerOne, playerTwo, turnHeading){
         let turnStatus = "one"
         while (turnStatus = "one"){
             turnHeading.textContent = playerOne.name + "'s turn!"
-            //let userChoice = prompt()
+            
             if (userChoice in activeSquares){
                 playerOne.spaces.push(userChoice)
                 console.log(playerOne.spaces)
