@@ -1,31 +1,33 @@
-const gameboard = {
-    spaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+function game(playerOne, playerTwo, turnHeading){
+    const gameboard = {
+        spaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    }
+    const winConditions = {
+        row1: [0, 1, 2],
+        row2: [3, 4, 5],
+        row3: [6, 7, 8],
+        col1: [0, 3, 6],
+        col2: [1, 4, 7],
+        col3: [2, 5, 8],
+        diag1: [0, 4, 8],
+        diag2: [2, 4, 6]
+    }
+    let gameStatus = "start"
+    let activeSquares = gameboard.spaces
+    while (gameStatus = "start"){
+        let turnStatus = "one"
+        while (turnStatus = "one"){
+            turnHeading.textContent = playerOne.name + "'s turn!"
+            //let userChoice = prompt()
+            if (userChoice in activeSquares){
+                playerOne.spaces.push(userChoice)
+                console.log(playerOne.spaces)
+            } else {
+                console.log("Invalid space. Try again!")
+            }
+        }
+    }
 }
-
-const playerOne = {
-    name: "One",
-    marker: "X",
-    spaces: []
-}
-
-const playerTwo = {
-    name: "Two",
-    marker: "O",
-    spaces: []
-}
-
-const winConditions = {
-    row1: [0, 1, 2],
-    row2: [3, 4, 5],
-    row3: [6, 7, 8],
-    col1: [0, 3, 6],
-    col2: [1, 4, 7],
-    col3: [2, 5, 8],
-    diag1: [0, 4, 8],
-    diag2: [2, 4, 6]
-}
-
-const startButton = document.getElementById("startButton")
 
 function boardHTML(){
     const boardTable = document.createElement("table")
@@ -65,31 +67,34 @@ function boardHTML(){
     boardTable.append(boardRow1)
     boardTable.append(boardRow2)
     boardTable.append(boardRow3)
-    document.body.insertAdjacentElement("afterbegin", boardTable)
+    document.getElementById("content").insertAdjacentElement("beforeend", boardTable)
 }
 
-function game(gameboard, playerOne, playerTwo, winConditions){
-    let gameStatus = "start"
-    let activeSquares = gameboard.spaces
-    while (gameStatus = "start"){
-        let turnStatus = "one"
-        while (turnStatus = "one"){
-            console.log(playerOne.name + "'s turn!")
-            //let userChoice = prompt()
-            if (userChoice in activeSquares){
-                playerOne.spaces.push(userChoice)
-                console.log(playerOne.spaces)
-            } else {
-                console.log("Invalid space. Try again!")
-            }
-        }
-    }
+const startButton = document.getElementById("startButton")
+
+const playerOne = {
+    name: "Player One",
+    marker: "X",
+    spaces: []
+}
+
+const playerTwo = {
+    name: "Player Two",
+    marker: "O",
+    spaces: []
 }
 
 startButton.addEventListener("click", () => {
-    playerOne.name = document.getElementById("playerOne").textContent
-    playerTwo.name = document.getElementById("playerTwo").textContent
-    document.body.innerHTML = ""
+    if (document.getElementById("playerOne").value != ""){
+    playerOne.name = document.getElementById("playerOne").value
+    }
+    if (document.getElementById("playerTwo").value != ""){
+    playerTwo.name = document.getElementById("playerTwo").value
+    }
+    document.getElementById("content").innerHTML = ""
+    const turnHeading = document.createElement("h1")
+    turnHeading.setAttribute("id", "playerTurn")
+    document.getElementById("content").insertAdjacentElement("afterbegin", turnHeading)
     boardHTML()
-    game(gameboard, playerOne, playerTwo, winConditions)
+    game(playerOne, playerTwo, turnHeading)
 })
