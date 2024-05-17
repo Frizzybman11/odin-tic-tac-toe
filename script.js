@@ -11,6 +11,7 @@ function game(playerOne, playerTwo, turnHeading){
     turnHeading.textContent = playerOne.name + "'s turn!"
 
     gametable.addEventListener('click', function (e){
+        console.log(gameStatus)
         const cell = e.target.closest('td');
         let num = cell.id.slice(-1)
         num = Number(num)
@@ -21,11 +22,11 @@ function game(playerOne, playerTwo, turnHeading){
                 num = gameboard.spaces.indexOf(num)
                 gameboard.spaces.splice(num, 1)
                 playerOne.spaces.sort()
-                console.log(playerOne.spaces)
-                console.log(gameboard.spaces)
-                /*if (checkWin(playerOne.spaces) == true){
-                    console.log(playerOne.name + " Wins!")
-                }*/
+                if (checkWin(playerOne)){
+                    gameStatus = "end"
+                    gametable.removeEventListener('click', function (e){})
+                    return
+                }
                 turnStatus = "two"
                 turnHeading.textContent = playerTwo.name + "'s turn!"
             } else {
@@ -38,8 +39,11 @@ function game(playerOne, playerTwo, turnHeading){
                 num = gameboard.spaces.indexOf(num)
                 gameboard.spaces.splice(num, 1)
                 playerTwo.spaces.sort()
-                console.log(playerTwo.spaces)
-                console.log(gameboard.spaces)
+                if (checkWin(playerTwo)){
+                    gameStatus = "end"
+                    gametable.removeEventListener('click', function (e){})
+                    return
+                }
                 turnStatus = "one"
                 turnHeading.textContent = playerOne.name + "'s turn!"
             } else {
@@ -49,32 +53,31 @@ function game(playerOne, playerTwo, turnHeading){
     })
 }
 
-function checkWin(playerSpaces){
-    const winConditions = {
-        row1: [0, 1, 2],
-        row2: [3, 4, 5],
-        row3: [6, 7, 8],
-        col1: [0, 3, 6],
-        col2: [1, 4, 7],
-        col3: [2, 5, 8],
-        diag1: [0, 4, 8],
-        diag2: [2, 4, 6]
-    }
-    for (arr in winConditions){
+function checkWin(player){
+    const winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
+    winConditions.forEach((arr) => {
         let win = []
         for (let i = 0; i < arr.length; i++){
-            if (playerSpaces.includes(arr[i])){
+            if (player.spaces.includes(arr[i])){
                 win.push(arr[i])
+                win.sort()
             }
         }
-        if (win.length = 3){
-            return win, true
-        } else {
-            return false
+        if (win.length == 3){
+            console.log(player.name + " Wins!")
+            return true, win
         }
-    }
-
-}
+    })
+ }
 
 function boardHTML(){
     const boardTable = document.createElement("table")
