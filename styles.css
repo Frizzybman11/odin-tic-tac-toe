@@ -25,6 +25,8 @@ table {
 }
 
 td {
+    font-size: 72px;
+    text-align: center;
     width: 100px;
     height: 100px;
 }
