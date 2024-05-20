@@ -1,21 +1,32 @@
-function game(playerOne, playerTwo, turnHeading){
-    const gameboard = {
-        spaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    }
+const startButton = document.getElementById("startButton")
 
-    const gametable = document.getElementById("gameTable")
+const playerOne = {
+    name: "Player One",
+    marker: "X",
+    spaces: []
+}
 
-    let gameStatus = "start"
-    let turnStatus = "one"
+const playerTwo = {
+    name: "Player Two",
+    marker: "O",
+    spaces: []
+}
 
-    turnHeading.textContent = playerOne.name + "'s turn!"
+const gameboard = {
+    spaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
 
-    gametable.addEventListener('click', function (e){
-        console.log(gameStatus)
-        const cell = e.target.closest('td');
-        let num = cell.id.slice(-1)
-        num = Number(num)
-        if (gameStatus == "start" && turnStatus == "one"){ 
+const turnHeading = document.createElement("h1")
+turnHeading.setAttribute("id", "playerTurn")
+
+let gameStatus = "start"
+let turnStatus = "one"
+
+function gameTurn(cell){
+    let num = cell.id.slice(-1)
+    num = Number(num)
+    if (gameStatus === "start"){
+        if (turnStatus === "one"){ 
             if (gameboard.spaces.indexOf(num) >= 0){
                 playerOne.spaces.push(num)
                 cell.textContent = playerOne.marker
@@ -23,16 +34,17 @@ function game(playerOne, playerTwo, turnHeading){
                 gameboard.spaces.splice(num, 1)
                 playerOne.spaces.sort()
                 if (checkWin(playerOne)){
+                    removeClick()
                     gameStatus = "end"
-                    gametable.removeEventListener('click', function (e){})
                     return
+                } else {
+                    turnStatus = "two"
+                    turnHeading.textContent = playerTwo.name + "'s turn!"
                 }
-                turnStatus = "two"
-                turnHeading.textContent = playerTwo.name + "'s turn!"
             } else {
                 console.log("Invalid space. Try again!")
             }
-        } else if (gameStatus == "start" && turnStatus == "two"){
+        } else if (turnStatus === "two")
             if (gameboard.spaces.indexOf(num) >= 0){
                 playerTwo.spaces.push(num)
                 cell.textContent = playerTwo.marker
@@ -40,17 +52,19 @@ function game(playerOne, playerTwo, turnHeading){
                 gameboard.spaces.splice(num, 1)
                 playerTwo.spaces.sort()
                 if (checkWin(playerTwo)){
+                    removeClick()
                     gameStatus = "end"
-                    gametable.removeEventListener('click', function (e){})
                     return
+                } else {
+                    turnStatus = "one"
+                    turnHeading.textContent = playerOne.name + "'s turn!"
                 }
-                turnStatus = "one"
-                turnHeading.textContent = playerOne.name + "'s turn!"
             } else {
                 console.log("Invalid space. Try again!")
             }
-        }
-    })
+    } else if (gameStatus === "end") {
+        return
+    }
 }
 
 function checkWin(player){
@@ -106,6 +120,15 @@ function boardHTML(){
     boardCell6.setAttribute("id", "cell6")
     boardCell7.setAttribute("id", "cell7")
     boardCell8.setAttribute("id", "cell8")
+    boardCell0.setAttribute("onclick", "gameTurn(this)")
+    boardCell1.setAttribute("onclick", "gameTurn(this)")
+    boardCell2.setAttribute("onclick", "gameTurn(this)")
+    boardCell3.setAttribute("onclick", "gameTurn(this)")
+    boardCell4.setAttribute("onclick", "gameTurn(this)")
+    boardCell5.setAttribute("onclick", "gameTurn(this)")
+    boardCell6.setAttribute("onclick", "gameTurn(this)")
+    boardCell7.setAttribute("onclick", "gameTurn(this)")
+    boardCell8.setAttribute("onclick", "gameTurn(this)")
     boardRow1.append(boardCell0)
     boardRow1.append(boardCell1)
     boardRow1.append(boardCell2)
@@ -121,18 +144,16 @@ function boardHTML(){
     document.getElementById("content").insertAdjacentElement("beforeend", boardTable)
 }
 
-const startButton = document.getElementById("startButton")
-
-const playerOne = {
-    name: "Player One",
-    marker: "X",
-    spaces: []
-}
-
-const playerTwo = {
-    name: "Player Two",
-    marker: "O",
-    spaces: []
+function removeClick(){
+    boardCell0.setAttribute("onclick", "")
+    boardCell1.setAttribute("onclick", "")
+    boardCell2.setAttribute("onclick", "")
+    boardCell3.setAttribute("onclick", "")
+    boardCell4.setAttribute("onclick", "")
+    boardCell5.setAttribute("onclick", "")
+    boardCell6.setAttribute("onclick", "")
+    boardCell7.setAttribute("onclick", "")
+    boardCell8.setAttribute("onclick", "")
 }
 
 startButton.addEventListener("click", () => {
@@ -143,9 +164,7 @@ startButton.addEventListener("click", () => {
     playerTwo.name = document.getElementById("playerTwo").value
     }
     document.getElementById("content").innerHTML = ""
-    const turnHeading = document.createElement("h1")
-    turnHeading.setAttribute("id", "playerTurn")
     document.getElementById("content").insertAdjacentElement("afterbegin", turnHeading)
     boardHTML()
-    game(playerOne, playerTwo, turnHeading)
+    turnHeading.textContent = playerOne.name + "'s turn!"
 })
