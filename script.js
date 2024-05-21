@@ -62,6 +62,11 @@ function gameTurn(cell){
                     turnHeading.textContent = playerTwo.name + " wins!"
                     removeClick()
                     game.status = "end"
+                    const playButton = document.createElement("button")
+                    playButton.setAttribute("id", "playButton")
+                    playButton.setAttribute("onclick", "playAgain(game)")
+                    playButton.textContent = "Play Again"
+                    document.getElementById("content").insertAdjacentElement("beforeend", playButton)
                     return
                 } else {
                     game.turn = "one"
