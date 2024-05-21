@@ -12,61 +12,65 @@ const playerTwo = {
     spaces: []
 }
 
-const gameboard = {
-    spaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-}
-
 const turnHeading = document.createElement("h1")
 turnHeading.setAttribute("id", "playerTurn")
 
-let gameStatus = "start"
-let turnStatus = "one"
+let game = {
+    status: "start",
+    turn: "one",
+    spaces: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
 
 function gameTurn(cell){
     let num = cell.id.slice(-1)
     num = Number(num)
-    if (gameStatus == "start"){
-        if (turnStatus == "one"){ 
-            if (gameboard.spaces.indexOf(num) >= 0){
+    if (game.status == "start"){
+        if (game.turn == "one"){ 
+            if (game.spaces.indexOf(num) >= 0){
                 playerOne.spaces.push(num)
                 cell.textContent = playerOne.marker
-                num = gameboard.spaces.indexOf(num)
-                gameboard.spaces.splice(num, 1)
+                num = game.spaces.indexOf(num)
+                game.spaces.splice(num, 1)
                 playerOne.spaces.sort()
                 let win = checkWin(playerOne)
                 if (win == "yes"){
                     turnHeading.textContent = playerOne.name + " wins!"
                     removeClick()
-                    gameStatus = "end"
+                    game.status = "end"
+                    const playButton = document.createElement("button")
+                    playButton.setAttribute("id", "playButton")
+                    playButton.setAttribute("onclick", "playAgain(game)")
+                    playButton.textContent = "Play Again"
+                    document.getElementById("content").insertAdjacentElement("beforeend", playButton)
                     return
                 } else {
-                    turnStatus = "two"
+                    game.turn = "two"
                     turnHeading.textContent = playerTwo.name + "'s turn!"
                 }
             } else {
                 console.log("Invalid space. Try again!")
             }
-        } else if (turnStatus == "two")
-            if (gameboard.spaces.indexOf(num) >= 0){
+        } else if (game.turn == "two")
+            if (game.spaces.indexOf(num) >= 0){
                 playerTwo.spaces.push(num)
                 cell.textContent = playerTwo.marker
-                num = gameboard.spaces.indexOf(num)
-                gameboard.spaces.splice(num, 1)
+                num = game.spaces.indexOf(num)
+                game.spaces.splice(num, 1)
                 playerTwo.spaces.sort()
                 let win = checkWin(playerTwo)
                 if (win == "yes"){
                     turnHeading.textContent = playerTwo.name + " wins!"
                     removeClick()
-                    gameStatus = "end"
+                    game.status = "end"
                     return
                 } else {
-                    turnStatus = "one"
+                    game.turn = "one"
                     turnHeading.textContent = playerOne.name + "'s turn!"
                 }
             } else {
                 console.log("Invalid space. Try again!")
             }
-    } else if (gameStatus == "end") {
+    } else if (game.status == "end") {
         return
     }
 }
@@ -135,6 +139,19 @@ function checkWin(player){
         return win
     }
  }
+
+function playAgain(game){
+    document.getElementById("content").innerHTML = ""
+    const turnHeading = document.createElement("h1")
+    turnHeading.setAttribute("id", "playerTurn")
+    document.getElementById("content").insertAdjacentElement("afterbegin", turnHeading)
+    turnHeading.textContent = playerOne.name + "'s turn!"
+    boardHTML()
+    game.status = "start"
+    game.turn = "one"
+    game.spaces = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    return game
+}
 
 function boardHTML(){
     const boardTable = document.createElement("table")
