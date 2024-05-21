@@ -25,15 +25,17 @@ let turnStatus = "one"
 function gameTurn(cell){
     let num = cell.id.slice(-1)
     num = Number(num)
-    if (gameStatus === "start"){
-        if (turnStatus === "one"){ 
+    if (gameStatus == "start"){
+        if (turnStatus == "one"){ 
             if (gameboard.spaces.indexOf(num) >= 0){
                 playerOne.spaces.push(num)
                 cell.textContent = playerOne.marker
                 num = gameboard.spaces.indexOf(num)
                 gameboard.spaces.splice(num, 1)
                 playerOne.spaces.sort()
-                if (checkWin(playerOne)){
+                let win = checkWin(playerOne)
+                if (win == "yes"){
+                    turnHeading.textContent = playerOne.name + " wins!"
                     removeClick()
                     gameStatus = "end"
                     return
@@ -44,14 +46,16 @@ function gameTurn(cell){
             } else {
                 console.log("Invalid space. Try again!")
             }
-        } else if (turnStatus === "two")
+        } else if (turnStatus == "two")
             if (gameboard.spaces.indexOf(num) >= 0){
                 playerTwo.spaces.push(num)
                 cell.textContent = playerTwo.marker
                 num = gameboard.spaces.indexOf(num)
                 gameboard.spaces.splice(num, 1)
                 playerTwo.spaces.sort()
-                if (checkWin(playerTwo)){
+                let win = checkWin(playerTwo)
+                if (win == "yes"){
+                    turnHeading.textContent = playerTwo.name + " wins!"
                     removeClick()
                     gameStatus = "end"
                     return
@@ -62,35 +66,74 @@ function gameTurn(cell){
             } else {
                 console.log("Invalid space. Try again!")
             }
-    } else if (gameStatus === "end") {
+    } else if (gameStatus == "end") {
         return
     }
 }
 
 function checkWin(player){
-    const winConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ]
-    winConditions.forEach((arr) => {
-        let win = []
-        for (let i = 0; i < arr.length; i++){
-            if (player.spaces.includes(arr[i])){
-                win.push(arr[i])
-                win.sort()
-            }
-        }
-        if (win.length == 3){
-            console.log(player.name + " Wins!")
-            return true, win
-        }
-    })
+    const cell0 = document.getElementById("cell0")
+    const cell1 = document.getElementById("cell1")
+    const cell2 = document.getElementById("cell2")
+    const cell3 = document.getElementById("cell3")
+    const cell4 = document.getElementById("cell4")
+    const cell5 = document.getElementById("cell5")
+    const cell6 = document.getElementById("cell6")
+    const cell7 = document.getElementById("cell7")
+    const cell8 = document.getElementById("cell8")
+    let win = ""
+    if (cell0.textContent == player.marker && cell1.textContent == player.marker && cell2.textContent == player.marker){
+        cell0.style.color = "red"
+        cell1.style.color = "red"
+        cell2.style.color = "red"
+        win = "yes"
+        return win
+    } else if (cell3.textContent == player.marker && cell4.textContent == player.marker && cell5.textContent == player.marker){
+        cell3.style.color = "red"
+        cell4.style.color = "red"
+        cell5.style.color = "red"
+        win = "yes"
+        return win
+    } else if (cell6.textContent == player.marker && cell7.textContent == player.marker && cell8.textContent == player.marker){
+        cell6.style.color = "red"
+        cell7.style.color = "red"
+        cell8.style.color = "red"
+        win = "yes"
+        return win
+    } else if (cell0.textContent == player.marker && cell3.textContent == player.marker && cell6.textContent == player.marker){
+        cell0.style.color = "red"
+        cell3.style.color = "red"
+        cell6.style.color = "red"
+        win = "yes"
+        return win
+    } else if (cell1.textContent == player.marker && cell4.textContent == player.marker && cell7.textContent == player.marker){
+        cell1.style.color = "red"
+        cell4.style.color = "red"
+        cell7.style.color = "red"
+        win = "yes"
+        return win
+    } else if (cell2.textContent == player.marker && cell5.textContent == player.marker && cell8.textContent == player.marker){
+        cell2.style.color = "red"
+        cell5.style.color = "red"
+        cell8.style.color = "red"
+        win = "yes"
+        return win
+    } else if (cell0.textContent == player.marker && cell4.textContent == player.marker && cell8.textContent == player.marker){
+        cell0.style.color = "red"
+        cell4.style.color = "red"
+        cell8.style.color = "red"
+        win = "yes"
+        return win
+    } else if  (cell2.textContent == player.marker && cell4.textContent == player.marker && cell6.textContent == player.marker){
+        cell2.style.color = "red"
+        cell4.style.color = "red"
+        cell6.style.color = "red"
+        win = "yes"
+        return win
+    } else {
+        win = "no"
+        return win
+    }
  }
 
 function boardHTML(){
@@ -145,6 +188,15 @@ function boardHTML(){
 }
 
 function removeClick(){
+    const boardCell0 = document.getElementById("cell0")
+    const boardCell1 = document.getElementById("cell1")
+    const boardCell2 = document.getElementById("cell2")
+    const boardCell3 = document.getElementById("cell3")
+    const boardCell4 = document.getElementById("cell4")
+    const boardCell5 = document.getElementById("cell5")
+    const boardCell6 = document.getElementById("cell6")
+    const boardCell7 = document.getElementById("cell7")
+    const boardCell8 = document.getElementById("cell8")
     boardCell0.setAttribute("onclick", "")
     boardCell1.setAttribute("onclick", "")
     boardCell2.setAttribute("onclick", "")
