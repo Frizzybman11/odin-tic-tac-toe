@@ -33,7 +33,17 @@ function gameTurn(cell){
                 game.spaces.splice(num, 1)
                 playerOne.spaces.sort()
                 let win = checkWin(playerOne)
-                if (win == "yes"){
+                if (win == "draw"){
+                    turnHeading.textContent = "It's a draw!"
+                    removeClick()
+                    game.status = "end"
+                    const playButton = document.createElement("button")
+                    playButton.setAttribute("id", "playButton")
+                    playButton.setAttribute("onclick", "playAgain(game)")
+                    playButton.textContent = "Play Again"
+                    document.getElementById("content").insertAdjacentElement("beforeend", playButton)
+                    return
+                } else if (win == "yes"){
                     turnHeading.textContent = playerOne.name + " wins!"
                     removeClick()
                     game.status = "end"
@@ -58,7 +68,17 @@ function gameTurn(cell){
                 game.spaces.splice(num, 1)
                 playerTwo.spaces.sort()
                 let win = checkWin(playerTwo)
-                if (win == "yes"){
+                if (win == "draw"){
+                    turnHeading.textContent = "It's a draw!"
+                    removeClick()
+                    game.status = "end"
+                    const playButton = document.createElement("button")
+                    playButton.setAttribute("id", "playButton")
+                    playButton.setAttribute("onclick", "playAgain(game)")
+                    playButton.textContent = "Play Again"
+                    document.getElementById("content").insertAdjacentElement("beforeend", playButton)
+                    return
+                } else if (win == "yes"){
                     turnHeading.textContent = playerTwo.name + " wins!"
                     removeClick()
                     game.status = "end"
@@ -133,11 +153,14 @@ function checkWin(player){
         cell8.style.color = "red"
         win = "yes"
         return win
-    } else if  (cell2.textContent == player.marker && cell4.textContent == player.marker && cell6.textContent == player.marker){
+    } else if (cell2.textContent == player.marker && cell4.textContent == player.marker && cell6.textContent == player.marker){
         cell2.style.color = "red"
         cell4.style.color = "red"
         cell6.style.color = "red"
         win = "yes"
+        return win
+    } else if (cell0.textContent != "" && cell1.textContent != "" && cell2.textContent != "" && cell3.textContent != "" && cell4.textContent != "" && cell5.textContent != "" && cell6.textContent != "" && cell7.textContent != "" && cell8.textContent != ""){
+        win = "draw"
         return win
     } else {
         win = "no"
